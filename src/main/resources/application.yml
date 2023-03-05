@@ -1,0 +1,31 @@
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 100MB
+      enabled: true
+
+vk:
+  auth:
+    client-id: ${CLIENT_ID}
+    client-secret: ${CLIENT_SECRET}
+    access-secret: ${ACCESS_SECRET}
+
+
+secret-key: ${SECRET_KEY}
+
+

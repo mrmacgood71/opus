@@ -1,0 +1,23 @@
+{
+  "properties": [
+    {
+      "name": "vk.auth.client-id",
+      "type": "java.lang.String",
+      "description": "VK app id"
+    },
+    {
+      "name": "vk.auth.client-secret",
+      "type": "java.lang.String",
+      "description": "VK app client secret"
+    },
+    {
+      "name": "vk.auth.access-secret",
+      "type": "java.lang.String",
+      "description": "Description for access-key."
+    },
+    {
+      "name": "secret-key",
+      "type": "java.lang.String",
+      "description": "Description for secret-key."
+    }
+  ] }
