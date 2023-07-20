@@ -1,12 +1,15 @@
 package it.macgood.opus.works;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import it.macgood.opus.user.model.Career;
 import it.macgood.opus.views.View;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -37,7 +40,20 @@ public class Work {
     @JsonView(View.GetProfileInfo.class)
     private String originalFileName;
 
+    @Column(unique = false)
+    @JsonView(View.GetProfileInfo.class)
+    private String coverPhotoName;
+
+    @PrimaryKeyJoinColumn
+    @OneToOne(cascade = CascadeType.ALL, targetEntity = Career.class)
+    @JsonView(View.GetProfileInfo.class)
+    private Career tags;
+
     @Column
     @JsonView(View.GetProfileInfo.class)
     private String previewPhoto;
+
+    @Column
+    @JsonView(View.GetProfileInfo.class)
+    private String links;
 }

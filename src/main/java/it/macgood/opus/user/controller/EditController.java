@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,6 +33,20 @@ public class EditController {
         return ResponseEntity.ok("Updated");
     }
 
+    @PostMapping("/deletePhoto")
+    public ResponseEntity<String> deletePhoto(
+            Authentication auth
+    ) throws IOException {
+
+        try {
+            User user = (User) auth.getPrincipal();
+            userService.updatePhoto(user.getId(), user.getEmail(), null);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping
     public ResponseEntity<String> edit(
             Principal principal,
@@ -41,7 +56,7 @@ public class EditController {
 
         user.setRole(Role.USER);
 
-        if (userService.findByEmail(principal.getName()).getEmail().equals(user.getEmail())) {
+        if (principal.getName().equals(user.getEmail())) {
 
             userService.updateUser(user);
 

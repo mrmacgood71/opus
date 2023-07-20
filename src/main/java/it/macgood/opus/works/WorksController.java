@@ -1,5 +1,6 @@
 package it.macgood.opus.works;
 
+import it.macgood.opus.user.model.Career;
 import it.macgood.opus.user.model.User;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -45,14 +46,21 @@ public class WorksController {
             @RequestParam("name") String name,
             @RequestParam("description") String description,
             @RequestParam("file") MultipartFile file,
+            @RequestParam("cover") MultipartFile coverPhoto,
+            @RequestParam("links") String links,
+            @RequestParam("tags") String tags,
             @RequestParam("photo") MultipartFile previewPhoto
     ) {
+        String[] split = links.split(";");
 
         boolean isSaved = worksService.save(
                 RequestWork.builder()
                         .name(name)
+                        .links(links)
+                        .tags(new Career(tags))
                         .description(description)
                         .file(file)
+                        .coverPhoto(coverPhoto)
                         .previewPhoto(previewPhoto)
                         .userEmail(principal.getName())
                         .build()
@@ -66,7 +74,7 @@ public class WorksController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Resource> download    (
+    public ResponseEntity<Resource> download(
             @PathVariable Integer id,
             HttpServletRequest request
     ) {

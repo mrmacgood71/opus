@@ -83,15 +83,19 @@ public class WorksService {
 
         MultipartFile file = work.getFile();
         MultipartFile previewPhoto = work.getPreviewPhoto();
+        MultipartFile coverPhoto = work.getCoverPhoto();
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
         String photoFileName = StringUtils.cleanPath(previewPhoto.getOriginalFilename());
+        String coverFileName = StringUtils.cleanPath(coverPhoto.getOriginalFilename());
 
         try {
             Path path = Paths.get(directory.toString(), filename);
             Path photoPath = Paths.get(directory.toString(), photoFileName);
+            Path coverPhotoPath = Paths.get(directory.toString(), coverFileName);
             if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                 Files.copy(previewPhoto.getInputStream(), photoPath, StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(coverPhoto.getInputStream(), coverPhotoPath, StandardCopyOption.REPLACE_EXISTING);
                 Optional<User> user = userRepository.findByEmail(work.getUserEmail());
                 try {
                     Work save = worksRepository.save(
@@ -99,6 +103,9 @@ public class WorksService {
                                     .description(work.getDescription())
                                     .name(work.getName())
                                     .path(path.toString())
+                                    .coverPhotoName(coverPhotoPath.toString())
+                                    .links(work.getLinks())
+                                    .tags(work.getTags())
                                     .originalFileName(filename)
                                     .previewPhoto(photoPath.toString())
                                     .build()

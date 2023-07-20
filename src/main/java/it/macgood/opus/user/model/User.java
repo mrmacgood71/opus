@@ -55,7 +55,6 @@ public class User implements UserDetails {
 
     @JsonView(View.GetProfileInfo.class)
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
     private List<Career> career;
 
     @JsonView(View.GetProfileInfo.class)

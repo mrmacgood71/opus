@@ -9,7 +9,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.*;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
@@ -32,15 +35,23 @@ public class UserService {
 
 
     public void updateUser(User user) {
+        try {
+            List<Object> obj = List.of(user.getId(), user.getDateOfBirth(), user.getEmail(), user.getFirstname(),
+                    user.getLastname(), user.getNickname(), user.getCareer(), user.getTeams());
 
-        userRepository.updateUser(
-                user.getId(),
-                user.getDateOfBirth(),
-                user.getEmail(),
-                user.getFirstname(),
-                user.getLastname(),
-                user.getNickname()
-        );
+            userRepository.updateUser(
+                    user.getId(),
+                    user.getDateOfBirth(),
+                    user.getEmail(),
+                    user.getFirstname(),
+                    user.getLastname(),
+                    user.getNickname(),
+                    user.getCareer(),
+                    user.getTeams()
+            );
+        } catch (NullPointerException ex) {
+
+        }
 
     }
 
@@ -72,4 +83,5 @@ public class UserService {
             }
         }
     }
+
 }

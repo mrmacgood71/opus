@@ -27,4 +27,8 @@ public class Career {
     @JsonView(View.GetProfileInfo.class)
     private String name;
 
+    public Career(String name) {
+        this.name = name;
+    }
+
 }

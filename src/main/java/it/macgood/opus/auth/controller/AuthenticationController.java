@@ -15,6 +15,8 @@ import it.macgood.opus.auth.model.AuthenticationRequest;
 import it.macgood.opus.auth.model.AuthenticationResponse;
 import it.macgood.opus.auth.model.RegisterRequest;
 import it.macgood.opus.auth.model.VkRegisterRequest;
+import it.macgood.opus.user.model.User;
+import it.macgood.opus.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -32,6 +35,7 @@ import java.util.List;
 public class AuthenticationController {
 
     private final AuthenticationService service;
+    private final UserService userService;
 
     @Value("${vk.auth.client-id}")
     private String clientId;
@@ -54,6 +58,20 @@ public class AuthenticationController {
         }
 
         return ResponseEntity.ok(service.register(response, registerRequest));
+    }
+
+    @GetMapping("/auth")
+    public String getToken(
+            Principal principal,
+            HttpServletRequest httpRequest,
+            HttpServletResponse response
+    ) {
+        User user = userService.findByEmail(principal.getName());
+
+        System.out.println("isAccountNonExpired: " + user.isAccountNonExpired());
+        System.out.println("isCredentialsNonExpired: " + user.isCredentialsNonExpired());
+
+        return user.getCurrentToken();
     }
 
     @PostMapping("/auth")
@@ -100,8 +118,8 @@ public class AuthenticationController {
                             Integer.valueOf(clientId),
                             clientSecret,
                             REDIRECT_URI,
-                            code)
-                    .execute();
+                            code
+                    ).execute();
 
             UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
 
@@ -126,5 +144,4 @@ public class AuthenticationController {
             return ResponseEntity.ok(service.enterFromVk(response, request));
         }
     }
-
 }
