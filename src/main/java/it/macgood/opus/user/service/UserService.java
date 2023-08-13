@@ -36,8 +36,6 @@ public class UserService {
 
     public void updateUser(User user) {
         try {
-            List<Object> obj = List.of(user.getId(), user.getDateOfBirth(), user.getEmail(), user.getFirstname(),
-                    user.getLastname(), user.getNickname(), user.getCareer(), user.getTeams());
 
             userRepository.updateUser(
                     user.getId(),
@@ -45,12 +43,11 @@ public class UserService {
                     user.getEmail(),
                     user.getFirstname(),
                     user.getLastname(),
-                    user.getNickname(),
-                    user.getCareer(),
-                    user.getTeams()
+                    user.getNickname()
             );
-        } catch (NullPointerException ex) {
-
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("fasdfkljl");
         }
 
     }

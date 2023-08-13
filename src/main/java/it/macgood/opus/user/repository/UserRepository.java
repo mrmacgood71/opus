@@ -20,16 +20,14 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Modifying
     @Transactional
-    @Query("update _user as u set u.dateOfBirth = :bdate, u.email = :email, u.firstname = :firstname, u.lastname = :lastname, u.nickname = :nickname, u.teams = :teams, u.career = :career where u.id = :id")
+    @Query("update _user as u set u.dateOfBirth = :bdate, u.email = :email, u.firstname = :firstname, u.lastname = :lastname, u.nickname = :nickname where u.id = :id")
     void updateUser(
             @Param("id") Integer id,
             @Param("bdate") String dateOfBirth,
             @Param("email") String email,
             @Param("firstname") String firstname,
             @Param("lastname") String lastname,
-            @Param("nickname") String nickname,
-            @Param("career") List<Career> career,
-            @Param("teams") List<Teams> teams
+            @Param("nickname") String nickname
     );
 
     @Modifying

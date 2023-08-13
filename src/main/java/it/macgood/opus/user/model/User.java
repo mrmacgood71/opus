@@ -54,15 +54,15 @@ public class User implements UserDetails {
     private String currentToken;
 
     @JsonView(View.GetProfileInfo.class)
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Career> career;
 
     @JsonView(View.GetProfileInfo.class)
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Teams> teams;
 
     @JsonView(View.GetProfileInfo.class)
-    @OneToMany()
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Work> works;
 
     @Enumerated(EnumType.STRING)

@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @CrossOrigin
@@ -54,6 +55,11 @@ public class AuthenticationController {
     ) throws IOException {
 
         if (registerRequest.getEmail().isEmpty() || registerRequest.getPassword().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        try {
+            System.out.println();
+        } catch (NoSuchElementException e) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -87,6 +93,18 @@ public class AuthenticationController {
     }
 
     private static final String REDIRECT_URI = "http://localhost:8080/api/v1/enter/vk";
+
+    @GetMapping("/trust")
+    public String getCurrentToken(
+            Principal principal,
+            HttpServletRequest httpRequest,
+            HttpServletResponse response
+    ) {
+        User user = userService.findByEmail(principal.getName());
+
+
+        return user.getCurrentToken();
+    }
 
     @GetMapping("/vk")
     public ResponseEntity<AuthenticationResponse> enterByVK(

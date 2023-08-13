@@ -20,6 +20,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("api/v1/works")
 @RequiredArgsConstructor
 public class WorksController {

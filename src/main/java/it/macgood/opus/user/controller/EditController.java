@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.security.Principal;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1/edit")
 @RequiredArgsConstructor
 public class EditController {
@@ -54,16 +55,15 @@ public class EditController {
             @RequestBody User user
     ) {
 
+        System.out.println(principal.getName() + "sdfjklsadf");
+
         user.setRole(Role.USER);
 
-        if (principal.getName().equals(user.getEmail())) {
 
-            userService.updateUser(user);
+        userService.updateUser(user);
 
-            return ResponseEntity.ok("Successful");
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok("Successful");
+
 
     }
 }
